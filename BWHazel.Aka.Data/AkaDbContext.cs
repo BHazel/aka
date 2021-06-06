@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using BWHazel.Aka.Model;
 
 namespace BWHazel.Aka.Data
 {
@@ -12,5 +13,10 @@ namespace BWHazel.Aka.Data
             : base(options)
         {
         }
+
+        /// <summary>
+        /// Gets or sets the short URLs.
+        /// </summary>
+        public DbSet<ShortUrl> ShortUrls;
     }
 }

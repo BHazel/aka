@@ -10,4 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="5.0.6" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BWHazel.Aka.Model\BWHazel.Aka.Model.csproj" />
+  </ItemGroup>
 </Project>

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using BWHazel.Aka.Data;
 
 namespace BWHazel.Aka.Web
 {
@@ -11,6 +13,9 @@ namespace BWHazel.Aka.Web
     /// </summary>
     public class Startup
     {
+        private const string AkaDataStoreConnectionStringKey = "AkaDataStore";
+        private const string CosmosDbDatabaseKey = "CosmosDb:Database";
+
         /// <summary>
         /// Initialises a new instance of the <see cref="Startup"/> class.
         /// </summary>
@@ -32,6 +37,12 @@ namespace BWHazel.Aka.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<AkaDbContext>(options =>
+            {
+                options.UseCosmos(
+                    this.Configuration.GetConnectionString(AkaDataStoreConnectionStringKey),
+                    this.Configuration[CosmosDbDatabaseKey]);
+            });
         }
 
         /// <summary>

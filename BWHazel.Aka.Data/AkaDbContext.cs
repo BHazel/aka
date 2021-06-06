@@ -3,8 +3,13 @@ using BWHazel.Aka.Model;
 
 namespace BWHazel.Aka.Data
 {
+    /// <summary>
+    /// Aka short URL database context.
+    /// </summary>
     public class AkaDbContext : DbContext
     {
+        private const string CosmosDbContainerName = "AkaShortUrls";
+
         /// <summary>
         /// Initialise a new instance of the <see cref="AkaDbContext"/> class.
         /// </summary>

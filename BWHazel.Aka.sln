@@ -3,10 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.810.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BWHazel.Aka.Model", "BWHazel.Aka.Model\BWHazel.Aka.Model.csproj", "{75028A73-72E3-400C-BB3F-B768722A22C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BWHazel.Aka.Data", "BWHazel.Aka.Data\BWHazel.Aka.Data.csproj", "{38045E27-D26E-4F22-821A-A24FDC5D1E03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75028A73-72E3-400C-BB3F-B768722A22C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75028A73-72E3-400C-BB3F-B768722A22C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75028A73-72E3-400C-BB3F-B768722A22C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75028A73-72E3-400C-BB3F-B768722A22C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38045E27-D26E-4F22-821A-A24FDC5D1E03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38045E27-D26E-4F22-821A-A24FDC5D1E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38045E27-D26E-4F22-821A-A24FDC5D1E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38045E27-D26E-4F22-821A-A24FDC5D1E03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

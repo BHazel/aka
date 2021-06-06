@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BWHazel.Aka.Model", "BWHaze
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BWHazel.Aka.Data", "BWHazel.Aka.Data\BWHazel.Aka.Data.csproj", "{38045E27-D26E-4F22-821A-A24FDC5D1E03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BWHazel.Aka.Web", "BWHazel.Aka.Web\BWHazel.Aka.Web.csproj", "{42AB2DC8-8772-4E24-AE51-C115EE6643FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{38045E27-D26E-4F22-821A-A24FDC5D1E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38045E27-D26E-4F22-821A-A24FDC5D1E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38045E27-D26E-4F22-821A-A24FDC5D1E03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42AB2DC8-8772-4E24-AE51-C115EE6643FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42AB2DC8-8772-4E24-AE51-C115EE6643FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42AB2DC8-8772-4E24-AE51-C115EE6643FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42AB2DC8-8772-4E24-AE51-C115EE6643FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -14,8 +14,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Microsoft.EntityFrameworkCore.Cosmos" />
+    <None Remove="Views\Links\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="5.0.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Links\" />
   </ItemGroup>
 </Project>

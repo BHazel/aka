@@ -1,5 +1,28 @@
-﻿@{
+﻿@using System.Collections.Generic;
+@using BWHazel.Aka.Model;
+
+@model IEnumerable<ShortUrl>
+
+@{
     ViewData["Title"] = "Links";
 }
 
 <h1>Links</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Link</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ShortUrl link in this.Model)
+        {
+            <tr>
+                <td><code>@link.Id</code></td>
+                <td><a href="@link.Url">@link.Title</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

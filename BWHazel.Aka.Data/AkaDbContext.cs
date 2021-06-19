@@ -8,7 +8,7 @@ namespace BWHazel.Aka.Data
     /// </summary>
     public class AkaDbContext : DbContext
     {
-        private const string CosmosDbContainerName = "AkaLinks";
+        private const string CosmosDbContainerName = "AkaShortUrls";
 
         /// <summary>
         /// Initialise a new instance of the <see cref="AkaDbContext"/> class.
@@ -27,6 +27,7 @@ namespace BWHazel.Aka.Data
         {
             modelBuilder.Entity<ShortUrl>()
                 .ToContainer(CosmosDbContainerName)
+                .HasPartitionKey(s => s.Url)
                 .HasNoDiscriminator();
 
             modelBuilder.Entity<ShortUrl>()

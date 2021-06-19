@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BWHazel.Aka.Data;
@@ -40,11 +41,40 @@ namespace BWHazel.Aka.Web.Controllers
         }
 
         /// <summary>
+        /// Returns the create link view.
+        /// </summary>
+        /// <returns>The create link view.</returns>
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return this.View();
+        }
+
+        /// <summary>
+        /// Add a new link to the database.
+        /// </summary>
+        /// <param name="link">The link to add.</param>
+        /// <returns>A redirection to the links index page.</returns>
+        [HttpPost]
+        public async Task<IActionResult> Create(ShortUrl link)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View();
+            }
+
+            this.dbContext.ShortUrls
+                .Add(link);
+
+            await this.dbContext.SaveChangesAsync();
+            return this.RedirectToAction("Index");
+        }
+
+        /// <summary>
         /// Returns the open link view.
         /// </summary>
         /// <param name="linkId">The link ID.</param>
         /// <returns>The open link view.</returns>
-        [Route("{linkId}")]
         public IActionResult Open(string linkId)
         {
             ShortUrl link =

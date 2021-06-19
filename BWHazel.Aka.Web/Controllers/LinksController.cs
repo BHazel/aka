@@ -44,7 +44,6 @@ namespace BWHazel.Aka.Web.Controllers
         /// </summary>
         /// <param name="linkId">The link ID.</param>
         /// <returns>The open link view.</returns>
-        [Route("{linkId}")]
         public IActionResult Open(string linkId)
         {
             ShortUrl link =

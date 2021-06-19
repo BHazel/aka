@@ -71,6 +71,10 @@ namespace BWHazel.Aka.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "AkaLink",
+                    pattern: "{linkId}",
+                    defaults: new { controller = "Links", action = "Open" });
             });
         }
     }

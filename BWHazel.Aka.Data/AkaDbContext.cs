@@ -8,7 +8,7 @@ namespace BWHazel.Aka.Data
     /// </summary>
     public class AkaDbContext : DbContext
     {
-        private const string CosmosDbContainerName = "AkaShortUrls";
+        private const string CosmosDbContainerName = "AkaLinks";
 
         /// <summary>
         /// Initialise a new instance of the <see cref="AkaDbContext"/> class.
@@ -20,8 +20,31 @@ namespace BWHazel.Aka.Data
         }
 
         /// <summary>
+        /// Initialises and configures the model.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ShortUrl>()
+                .ToContainer(CosmosDbContainerName)
+                .HasNoDiscriminator();
+
+            modelBuilder.Entity<ShortUrl>()
+                .Property(s => s.Id)
+                .ToJsonProperty("id");
+
+            modelBuilder.Entity<ShortUrl>()
+                .Property(s => s.Title)
+                .ToJsonProperty("title");
+
+            modelBuilder.Entity<ShortUrl>()
+                .Property(s => s.Url)
+                .ToJsonProperty("url");
+        }
+
+        /// <summary>
         /// Gets or sets the short URLs.
         /// </summary>
-        public DbSet<ShortUrl> ShortUrls;
+        public DbSet<ShortUrl> ShortUrls { get; set; }
     }
 }

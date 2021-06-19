@@ -38,5 +38,20 @@ namespace BWHazel.Aka.Web.Controllers
 
             return this.View(links);
         }
+
+        /// <summary>
+        /// Returns the open link view.
+        /// </summary>
+        /// <param name="linkId">The link ID.</param>
+        /// <returns>The open link view.</returns>
+        [Route("{linkId}")]
+        public IActionResult Open(string linkId)
+        {
+            ShortUrl link =
+                this.dbContext.ShortUrls
+                .FirstOrDefault(s => s.Id == linkId);
+
+            return this.View(link);
+        }
     }
 }

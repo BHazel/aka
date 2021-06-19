@@ -58,6 +58,11 @@ namespace BWHazel.Aka.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ShortUrl link)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View();
+            }
+
             this.dbContext.ShortUrls
                 .Add(link);
 

@@ -1,0 +1,24 @@
+﻿@using BWHazel.Aka.Model;
+
+@model ShortUrl
+
+@{
+    this.ViewData["Title"] = "Create Link";
+}
+
+<h1>Create Link</h1>
+
+<form asp-controller="Links" asp-action="Create" method="post">
+    <div>
+        <input asp-for="Id" placeholder="Link ID" />
+    </div>
+    <div>
+        <input asp-for="Title" placeholder="Title" />
+    </div>
+    <div>
+        <input asp-for="Url" placeholder="URL" />
+    </div>
+    <div>
+        <button type="submit">Create</button>
+    </div>
+</form>

@@ -1,16 +1,12 @@
-﻿@{
-    string userName =
-        this.User.Claims
-            .Where(c => c.Type == "name")
-            .Select(c => c.Value)
-            .First();
-}
+﻿@using BWHazel.Aka.Web.Services;
+
+@inject IdentityService identityService;
 
 <ul class="navbar-nav">
     @if (this.User.Identity.IsAuthenticated)
     {
         <li class="nav-item">
-            <span class="navbar-text text-dark">@userName</span>
+            <span class="navbar-text text-dark">@this.identityService.GetUserName(this.User)</span>
         </li>
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign Out</a>

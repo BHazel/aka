@@ -26,7 +26,8 @@
                 <td><code>@link.Id</code></td>
                 <td><a href="@link.Url">@link.Title</a></td>
                 <td>
-                    <a asp-action="Edit" asp-route-linkId="@link.Id">Edit</a>
+                    <a asp-action="Edit" asp-route-linkId="@link.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-linkId="@link.Id">Delete</a>
                 </td>
             </tr>
         }

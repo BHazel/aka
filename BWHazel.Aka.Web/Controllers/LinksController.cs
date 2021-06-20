@@ -71,6 +71,46 @@ namespace BWHazel.Aka.Web.Controllers
         }
 
         /// <summary>
+        /// Returns the edit link view.
+        /// </summary>
+        /// <param name="linkId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult Edit(string linkId)
+        {
+            ShortUrl link =
+                this.dbContext.ShortUrls
+                .FirstOrDefault(s => s.Id == linkId);
+
+            if (link == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(link);
+        }
+
+        /// <summary>
+        /// Edits a link in the database.
+        /// </summary>
+        /// <param name="link">The link to edit.</param>
+        /// <returns>A redirection to the links index page.</returns>
+        [HttpPost]
+        public IActionResult Edit(ShortUrl link)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(link);
+            }
+
+            this.dbContext.ShortUrls
+                .Update(link);
+
+            this.dbContext.SaveChanges();
+            return this.RedirectToAction("Index");
+        }
+
+        /// <summary>
         /// Returns the open link view.
         /// </summary>
         /// <param name="linkId">The link ID.</param>

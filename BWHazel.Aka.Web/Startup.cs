@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 using BWHazel.Aka.Data;
 
 namespace BWHazel.Aka.Web
@@ -14,6 +16,7 @@ namespace BWHazel.Aka.Web
     public class Startup
     {
         private const string AkaDataStoreConnectionStringKey = "AkaDataStore";
+        private const string AzureAdSectionKey = "AzureAD";
         private const string CosmosDbDatabaseKey = "CosmosDb:Database";
 
         /// <summary>
@@ -36,6 +39,13 @@ namespace BWHazel.Aka.Web
         /// <param name="services">The application services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMicrosoftIdentityWebAppAuthentication(
+                this.Configuration,
+                AzureAdSectionKey);
+
+            services.AddRazorPages()
+                .AddMicrosoftIdentityUI();
+
             services.AddControllersWithViews();
             services.AddDbContext<AkaDbContext>(options =>
             {
@@ -65,6 +75,7 @@ namespace BWHazel.Aka.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

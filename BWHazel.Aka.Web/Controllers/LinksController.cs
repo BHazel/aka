@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using BWHazel.Aka.Data;
@@ -11,6 +12,7 @@ namespace BWHazel.Aka.Web.Controllers
     /// <summary>
     /// The links controller.
     /// </summary>
+    [Authorize]
     public class LinksController : Controller
     {
         private readonly ILogger<LinksController> logger;
@@ -31,6 +33,7 @@ namespace BWHazel.Aka.Web.Controllers
         /// Returns the links index view.
         /// </summary>
         /// <returns>The links index view.</returns>
+        [AllowAnonymous]
         public IActionResult Index()
         {
             List<ShortUrl> links =
@@ -150,6 +153,7 @@ namespace BWHazel.Aka.Web.Controllers
         /// </summary>
         /// <param name="linkId">The link ID.</param>
         /// <returns>The open link view.</returns>
+        [AllowAnonymous]
         public IActionResult Open(string linkId)
         {
             ShortUrl link =

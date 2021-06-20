@@ -111,6 +111,41 @@ namespace BWHazel.Aka.Web.Controllers
         }
 
         /// <summary>
+        /// Returns the delete link view.
+        /// </summary>
+        /// <param name="linkId">The link ID.</param>
+        /// <returns>The delete link view.</returns>
+        [HttpGet]
+        public IActionResult Delete(string linkId)
+        {
+            ShortUrl link =
+                this.dbContext.ShortUrls
+                .FirstOrDefault(s => s.Id == linkId);
+
+            if (link == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(link);
+        }
+
+        /// <summary>
+        /// Deletes a link from the database.
+        /// </summary>
+        /// <param name="link">The link to delete.</param>
+        /// <returns>A redirection to the links index page.</returns>
+        [HttpPost]
+        public IActionResult Delete(ShortUrl link)
+        {
+            this.dbContext.ShortUrls
+                .Remove(link);
+
+            this.dbContext.SaveChanges();
+            return this.RedirectToAction("Index");
+        }
+
+        /// <summary>
         /// Returns the open link view.
         /// </summary>
         /// <param name="linkId">The link ID.</param>

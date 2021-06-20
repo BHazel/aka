@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using BWHazel.Aka.Data;
+using BWHazel.Aka.Web.Services;
 
 namespace BWHazel.Aka.Web
 {
@@ -39,6 +40,8 @@ namespace BWHazel.Aka.Web
         /// <param name="services">The application services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IdentityService>();
+
             services.AddMicrosoftIdentityWebAppAuthentication(
                 this.Configuration,
                 AzureAdSectionKey);

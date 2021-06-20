@@ -24,5 +24,10 @@ namespace BWHazel.Aka.Model
         [Required(ErrorMessage = "A valid URL is required.")]
         [Url]
         public string Url { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ID of the user which created the link.
+        /// </summary>
+        public string UserId { get; set; }
     }
 }

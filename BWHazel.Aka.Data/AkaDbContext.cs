@@ -41,6 +41,10 @@ namespace BWHazel.Aka.Data
             modelBuilder.Entity<ShortUrl>()
                 .Property(s => s.Url)
                 .ToJsonProperty("url");
+
+            modelBuilder.Entity<ShortUrl>()
+                .Property(s => s.UserId)
+                .ToJsonProperty("userId");
         }
 
         /// <summary>

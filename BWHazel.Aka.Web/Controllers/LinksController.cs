@@ -13,7 +13,7 @@ namespace BWHazel.Aka.Web.Controllers
     /// <summary>
     /// The links controller.
     /// </summary>
-    [Authorize]
+    [Authorize(Policy = "Aka.BWHazel/Administrator")]
     public class LinksController : Controller
     {
         private readonly ILogger<LinksController> logger;

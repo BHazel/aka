@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +23,7 @@ namespace BWHazel.Aka.Web
         private const string AkaDataStoreConnectionStringKey = "AkaDataStore";
         private const string AzureAdSectionKey = "AzureAD";
         private const string CosmosDbDatabaseKey = "CosmosDb:Database";
+        private const string GroupsKey = "Groups";
 
         /// <summary>
         /// Initialises a new instance of the <see cref="Startup"/> class.
@@ -46,10 +51,19 @@ namespace BWHazel.Aka.Web
                 this.Configuration,
                 AzureAdSectionKey);
 
-            services.AddRazorPages()
+            services.AddControllersWithViews()
                 .AddMicrosoftIdentityUI();
 
-            services.AddControllersWithViews();
+            services.AddAuthorization(options =>
+            {
+                this.AddAuthorisationPolicies(options);
+            });
+
+            services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            {
+                options.AccessDeniedPath = new("/Account/AccessDenied");
+            });
+
             services.AddDbContext<AkaDbContext>(options =>
             {
                 options.UseCosmos(
@@ -90,6 +104,30 @@ namespace BWHazel.Aka.Web
                     pattern: "{linkId}",
                     defaults: new { controller = "Links", action = "Open" });
             });
+        }
+
+        /// <summary>
+        /// Add authorisation policies for all application groups.
+        /// </summary>
+        /// <param name="authorisationOptions">The authorisation options.</param>
+        private void AddAuthorisationPolicies(AuthorizationOptions authorisationOptions)
+        {
+            IEnumerable<KeyValuePair<string, string>> groups =
+                this.Configuration
+                    .GetSection(GroupsKey)
+                    .GetChildren()
+                    .ToDictionary(s => s.Key, s => s.Value);
+
+            foreach (KeyValuePair<string, string> group in groups)
+            {
+                authorisationOptions.AddPolicy(
+                    group.Key,
+                    new AuthorizationPolicyBuilder().RequireClaim(
+                        "groups",
+                        group.Value
+                    ).Build()
+                );
+            }
         }
     }
 }

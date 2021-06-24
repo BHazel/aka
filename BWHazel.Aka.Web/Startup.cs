@@ -1,10 +1,17 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 using BWHazel.Aka.Data;
+using BWHazel.Aka.Web.Services;
 
 namespace BWHazel.Aka.Web
 {
@@ -14,7 +21,9 @@ namespace BWHazel.Aka.Web
     public class Startup
     {
         private const string AkaDataStoreConnectionStringKey = "AkaDataStore";
+        private const string AzureAdSectionKey = "AzureAD";
         private const string CosmosDbDatabaseKey = "CosmosDb:Database";
+        private const string GroupsKey = "Groups";
 
         /// <summary>
         /// Initialises a new instance of the <see cref="Startup"/> class.
@@ -36,7 +45,25 @@ namespace BWHazel.Aka.Web
         /// <param name="services">The application services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddSingleton<IdentityService>();
+
+            services.AddMicrosoftIdentityWebAppAuthentication(
+                this.Configuration,
+                AzureAdSectionKey);
+
+            services.AddControllersWithViews()
+                .AddMicrosoftIdentityUI();
+
+            services.AddAuthorization(options =>
+            {
+                this.AddAuthorisationPolicies(options);
+            });
+
+            services.Configure<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            {
+                options.AccessDeniedPath = new("/Account/AccessDenied");
+            });
+
             services.AddDbContext<AkaDbContext>(options =>
             {
                 options.UseCosmos(
@@ -65,6 +92,7 @@ namespace BWHazel.Aka.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
@@ -76,6 +104,30 @@ namespace BWHazel.Aka.Web
                     pattern: "{linkId}",
                     defaults: new { controller = "Links", action = "Open" });
             });
+        }
+
+        /// <summary>
+        /// Add authorisation policies for all application groups.
+        /// </summary>
+        /// <param name="authorisationOptions">The authorisation options.</param>
+        private void AddAuthorisationPolicies(AuthorizationOptions authorisationOptions)
+        {
+            IEnumerable<KeyValuePair<string, string>> groups =
+                this.Configuration
+                    .GetSection(GroupsKey)
+                    .GetChildren()
+                    .ToDictionary(s => s.Key, s => s.Value);
+
+            foreach (KeyValuePair<string, string> group in groups)
+            {
+                authorisationOptions.AddPolicy(
+                    group.Key,
+                    new AuthorizationPolicyBuilder().RequireClaim(
+                        "groups",
+                        group.Value
+                    ).Build()
+                );
+            }
         }
     }
 }

@@ -6,22 +6,26 @@
     this.ViewData["Title"] = "Create Link";
 }
 
-<h1>Create Link</h1>
+<div class="section">
+    <div class="container">
+        <h1>Create Link</h1>
 
-<form asp-controller="Links" asp-action="Create" method="post">
-    <div>
-        <input asp-for="Id" placeholder="Link ID" />
-        <span asp-validation-for="Id"></span>
+        <form asp-controller="Links" asp-action="Create" method="post">
+            <div>
+                <input asp-for="Id" placeholder="Link ID" />
+                <span asp-validation-for="Id"></span>
+            </div>
+            <div>
+                <input asp-for="Title" placeholder="Title" />
+                <span asp-validation-for="Title"></span>
+            </div>
+            <div>
+                <input asp-for="Url" placeholder="URL" />
+                <span asp-validation-for="Url"></span>
+            </div>
+            <div>
+                <button type="submit">Create</button>
+            </div>
+        </form>
     </div>
-    <div>
-        <input asp-for="Title" placeholder="Title" />
-        <span asp-validation-for="Title"></span>
-    </div>
-    <div>
-        <input asp-for="Url" placeholder="URL" />
-        <span asp-validation-for="Url"></span>
-    </div>
-    <div>
-        <button type="submit">Create</button>
-    </div>
-</form>
+</div>

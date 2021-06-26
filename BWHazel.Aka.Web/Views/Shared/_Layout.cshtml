@@ -7,8 +7,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - @this.configuration["Site:Name"]</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@this.ViewData["Title"] - @this.configuration["Site:Name"]</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -26,13 +25,12 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    <main id="mainContent">
+        @RenderBody()
+    </main>
+
+    <footer>
         <div class="container">
             Copyright &copy; Benedict W. Hazel, 2009-2021. All views expressed are my own.
         </div>

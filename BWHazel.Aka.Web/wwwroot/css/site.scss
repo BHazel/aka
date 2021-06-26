@@ -21,6 +21,10 @@ main {
     flex: 1 0 auto;
 }
 
+code {
+    @extend .red-text, .text-lighten-1;
+}
+
 footer {
     .page-footer {
         margin: 0;

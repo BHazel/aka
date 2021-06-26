@@ -10,21 +10,36 @@
     <div class="container">
         <h1>Create Link</h1>
 
+        <p>Please enter the details below to create a new link.</p>
+        <p><strong>Please note that the link ID cannot be changed once set.</strong></p>
+
         <form asp-controller="Links" asp-action="Create" method="post">
-            <div>
-                <input asp-for="Id" placeholder="Link ID" />
-                <span asp-validation-for="Id"></span>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="link-id" asp-for="Id" />
+                    <label for="link-id">Link ID (Leave blank to auto-generate)</label>
+                    <span asp-validation-for="Id"></span>
+                </div>
             </div>
-            <div>
-                <input asp-for="Title" placeholder="Title" />
-                <span asp-validation-for="Title"></span>
+            
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="title" asp-for="Title" />
+                    <label for="title">Title (Required)</label>
+                    <span asp-validation-for="Title"></span>
+                </div>
             </div>
-            <div>
-                <input asp-for="Url" placeholder="URL" />
-                <span asp-validation-for="Url"></span>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="url" asp-for="Url" />
+                    <label for="url">URL (Required)</label>
+                    <span asp-validation-for="Url"></span>
+                </div>
             </div>
-            <div>
-                <button type="submit">Create</button>
+
+            <div class="row">
+                <button type="submit" class="btn waves-effect waves-light">Create</button>
             </div>
         </form>
     </div>

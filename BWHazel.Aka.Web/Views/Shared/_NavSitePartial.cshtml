@@ -1,0 +1,15 @@
+﻿@using Microsoft.Extensions.Configuration;
+
+@inject IConfiguration configuration
+
+<nav>
+    <div class="nav-wrapper" role="navigation">
+        <div class="nav-wrapper container">
+            <a class="brand-logo" asp-controller="Home" asp-action="Index">@this.configuration["Site:Name"]</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a asp-controller="Links" asp-action="Index">Links</a></li>
+                <partial name="_LoginPartial" />
+            </ul>
+        </div>
+    </div>
+</nav>

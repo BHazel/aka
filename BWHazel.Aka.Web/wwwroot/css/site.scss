@@ -2,3 +2,23 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 @import "../lib/materialize/css/materialize.scss";
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+footer {
+    .page-footer {
+        margin: 0;
+    }
+
+    a {
+        color: #ffffff;
+    }
+}

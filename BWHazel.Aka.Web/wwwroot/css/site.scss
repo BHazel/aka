@@ -1,7 +1,15 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿$primary-color: #03a9f4;
+$secondary-color: #ff9800;
 
 @import "../lib/materialize/css/materialize.scss";
+
+.colour-success {
+    @extend .green;
+}
+
+.colour-danger {
+    @extend .red, .darken-4;
+}
 
 body {
     display: flex;
@@ -11,6 +19,10 @@ body {
 
 main {
     flex: 1 0 auto;
+}
+
+code {
+    @extend .red-text, .text-lighten-1;
 }
 
 footer {

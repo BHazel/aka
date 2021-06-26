@@ -4,32 +4,36 @@
 @model IEnumerable<ShortUrl>
 
 @{
-    ViewData["Title"] = "Links";
+    this.ViewData["Title"] = "Links";
 }
 
-<h1>Links</h1>
+<div class="section">
+    <div class="container">
+        <h1>Links</h1>
 
-<a asp-action="Create">Create Link</a>
+        <a asp-action="Create">Create Link</a>
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Link</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (ShortUrl link in this.Model)
-        {
-            <tr>
-                <td><code>@link.Id</code></td>
-                <td><a href="@link.Url">@link.Title</a></td>
-                <td>
-                    <a asp-action="Edit" asp-route-linkId="@link.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-linkId="@link.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Link</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ShortUrl link in this.Model)
+                {
+                    <tr>
+                        <td><code>@link.Id</code></td>
+                        <td><a href="@link.Url">@link.Title</a></td>
+                        <td>
+                            <a asp-action="Edit" asp-route-linkId="@link.Id">Edit</a> |
+                            <a asp-action="Delete" asp-route-linkId="@link.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

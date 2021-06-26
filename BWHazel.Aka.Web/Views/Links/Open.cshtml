@@ -6,12 +6,16 @@
     this.ViewData["Title"] = "Redirecting...";
 }
 
-<div style="text-align: center">
-    <h1>Redirecting...</h1>
-    <p>You are being redirected to:</p>
+<div class="section">
+    <div class="container">
+        <div class="row center">
+            <h1>Redirecting...</h1>
+            <p>You are being redirected to:</p>
 
-    <h2>@this.Model.Title</h2>
-    <p><a href="@this.Model.Url">@this.Model.Url</a></p>
+            <h2>@this.Model.Title</h2>
+            <p><a href="@this.Model.Url">@this.Model.Url</a></p>
+        </div>
+    </div>
 </div>
 
 @section Scripts

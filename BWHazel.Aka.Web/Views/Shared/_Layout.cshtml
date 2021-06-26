@@ -13,17 +13,7 @@
 </head>
 <body>
     <header>
-        <nav>
-            <div class="nav-wrapper" role="navigation">
-                <div class="nav-wrapper container">
-                    <a class="brand-logo" asp-controller="Home" asp-action="Index">@this.configuration["Site:Name"]</a>
-                    <ul class="right hide-on-med-and-down">
-                        <li><a asp-controller="Links" asp-action="Index">Links</a></li>
-                        <partial name="_LoginPartial" />
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <partial name="_NavSitePartial" />
     </header>
 
     <main id="mainContent">
@@ -31,9 +21,7 @@
     </main>
 
     <footer>
-        <div class="container">
-            Copyright &copy; Benedict W. Hazel, 2009-2021. All views expressed are my own.
-        </div>
+        <partial name="_Footer" />
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/materialize/js/materialize.min.js"></script>

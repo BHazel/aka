@@ -11,19 +11,31 @@
         <h1>Edit Link</h1>
 
         <form asp-controller="Links" asp-action="Edit" method="post">
-            <div>
-                <input asp-for="Id" placeholder="Link ID" disabled="disabled" />
-                <span asp-validation-for="Id"></span>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="link-id" asp-for="Id" disabled="disabled" />
+                    <label for="link-id">Link ID (Leave blank to auto-generate)</label>
+                    <span asp-validation-for="Id"></span>
+                </div>
             </div>
-            <div>
-                <input asp-for="Title" placeholder="Title" />
-                <span asp-validation-for="Title"></span>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="title" asp-for="Title" />
+                    <label for="title">Title (Required)</label>
+                    <span asp-validation-for="Title"></span>
+                </div>
             </div>
-            <div>
-                <input asp-for="Url" placeholder="URL" />
-                <span asp-validation-for="Url"></span>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="url" asp-for="Url" />
+                    <label for="url">URL (Required)</label>
+                    <span asp-validation-for="Url"></span>
+                </div>
             </div>
-            <div>
+
+            <div class="row">
                 <button type="submit" class="btn waves-effect waves-light">Edit</button>
             </div>
         </form>

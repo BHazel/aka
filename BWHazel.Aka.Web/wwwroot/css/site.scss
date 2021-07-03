@@ -1,7 +1,4 @@
-﻿$primary-color: #03a9f4;
-$secondary-color: #ff9800;
-
-@import "../lib/materialize/css/materialize.scss";
+﻿@import "../lib/materialize/css/materialize.scss";
 
 .colour-success {
     @extend .green;
@@ -19,6 +16,10 @@ body {
 
 main {
     flex: 1 0 auto;
+}
+
+h1, h4 {
+    color: $secondary-color;
 }
 
 code {

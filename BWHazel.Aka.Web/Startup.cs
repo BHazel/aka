@@ -46,6 +46,7 @@ namespace BWHazel.Aka.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IdentityService>();
+            services.AddSingleton<ShortUrlService>();
 
             services.AddMicrosoftIdentityWebAppAuthentication(
                 this.Configuration,

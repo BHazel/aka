@@ -19,6 +19,7 @@ namespace BWHazel.Aka.Web.Controllers
         private readonly ILogger<LinksController> logger;
         private readonly AkaDbContext dbContext;
         private readonly IdentityService identityService;
+        private readonly ShortUrlService shortUrlService;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="LinksController"/> class.
@@ -26,11 +27,16 @@ namespace BWHazel.Aka.Web.Controllers
         /// <param name="logger">The logger.</param>
         /// <param name="dbContext">The database context.</param>
         /// <param name="identityService">The identity service.</param>
-        public LinksController(ILogger<LinksController> logger, AkaDbContext dbContext, IdentityService identityService)
+        public LinksController(
+            ILogger<LinksController> logger,
+            AkaDbContext dbContext,
+            IdentityService identityService,
+            ShortUrlService shortUrlService)
         {
             this.logger = logger;
             this.dbContext = dbContext;
             this.identityService = identityService;
+            this.shortUrlService = shortUrlService;
         }
 
         /// <summary>
@@ -68,6 +74,11 @@ namespace BWHazel.Aka.Web.Controllers
             if (!this.ModelState.IsValid)
             {
                 return this.View();
+            }
+
+            if (string.IsNullOrWhiteSpace(link.Id))
+            {
+                link.Id = this.shortUrlService.GenerateShortUrlCode();
             }
 
             link.UserId = this.identityService.GetUserId(this.User);

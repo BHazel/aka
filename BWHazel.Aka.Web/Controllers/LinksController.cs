@@ -101,10 +101,7 @@ namespace BWHazel.Aka.Web.Controllers
         [HttpGet]
         public IActionResult Edit(string linkId)
         {
-            ShortUrl link =
-                this.dbContext.ShortUrls
-                .FirstOrDefault(s => s.Id == linkId);
-
+            ShortUrl link = this.dataService.GetShortUrl(linkId);
             if (link == null)
             {
                 return this.NotFound();
@@ -141,10 +138,7 @@ namespace BWHazel.Aka.Web.Controllers
         [HttpGet]
         public IActionResult Delete(string linkId)
         {
-            ShortUrl link =
-                this.dbContext.ShortUrls
-                .FirstOrDefault(s => s.Id == linkId);
-
+            ShortUrl link = this.dataService.GetShortUrl(linkId);
             if (link == null)
             {
                 return this.NotFound();
@@ -176,10 +170,7 @@ namespace BWHazel.Aka.Web.Controllers
         [AllowAnonymous]
         public IActionResult Open(string linkId)
         {
-            ShortUrl link =
-                this.dbContext.ShortUrls
-                .FirstOrDefault(s => s.Id == linkId);
-
+            ShortUrl link = this.dataService.GetShortUrl(linkId);
             return this.View(link);
         }
     }

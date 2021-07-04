@@ -88,10 +88,8 @@ namespace BWHazel.Aka.Web.Controllers
             }
 
             link.UserId = this.identityService.GetUserId(this.User);
-            this.dbContext.ShortUrls
-                .Add(link);
+            await this.dataService.AddShortUrl(link);
 
-            await this.dbContext.SaveChangesAsync();
             return this.RedirectToAction("Index");
         }
 

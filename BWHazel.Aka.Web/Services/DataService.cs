@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using BWHazel.Aka.Data;
@@ -55,6 +56,22 @@ namespace BWHazel.Aka.Web.Services
             }
 
             return links;
+        }
+
+        /// <summary>
+        /// Adds a new short URL.
+        /// </summary>
+        /// <param name="link">The short URL to add.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        public async Task AddShortUrl(ShortUrl link)
+        {
+            string dataCacheKey = this.configuration[DataCacheKey];
+
+            this.dbContext.ShortUrls
+                .Add(link);
+
+            await this.dbContext.SaveChangesAsync();
+            this.memoryCache.Set(dataCacheKey, this.dbContext.ShortUrls.ToList());
         }
     }
 }

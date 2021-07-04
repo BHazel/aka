@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -45,8 +46,10 @@ namespace BWHazel.Aka.Web
         /// <param name="services">The application services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IMemoryCache, MemoryCache>();
             services.AddSingleton<IdentityService>();
             services.AddSingleton<ShortUrlService>();
+            services.AddScoped<DataService>();
 
             services.AddMicrosoftIdentityWebAppAuthentication(
                 this.Configuration,

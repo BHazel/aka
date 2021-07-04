@@ -59,8 +59,27 @@ namespace BWHazel.Aka.Web.Services
         }
 
         /// <summary>
+        /// Get a single short URL from its ID.
+        /// </summary>
+        /// <param name="linkId">The link ID.</param>
+        /// <returns>A short URL.</returns>
+        public ShortUrl GetShortUrl(string linkId)
+        {
+            string dataCacheKey = this.configuration[DataCacheKey];
+
+            ShortUrl link =
+                this.GetAllShortUrls()
+                .FirstOrDefault(s => s.Id == linkId);
+
+            return link;
+        }
+
+        /// <summary>
         /// Adds a new short URL.
         /// </summary>
+        /// <remarks>
+        /// Once the database is updated the cache is reset with the updated collection of short URLs.
+        /// </remarks>
         /// <param name="link">The short URL to add.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
         public async Task AddShortUrl(ShortUrl link)

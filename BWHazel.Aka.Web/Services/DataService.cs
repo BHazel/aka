@@ -14,6 +14,7 @@ namespace BWHazel.Aka.Web.Services
     public class DataService
     {
         private const string DataCacheKey = "Site:DataCacheKey";
+        private readonly string dataCacheKey;
 
         private readonly IConfiguration configuration;
         private readonly IMemoryCache memoryCache;
@@ -29,6 +30,8 @@ namespace BWHazel.Aka.Web.Services
             this.configuration = configuration;
             this.memoryCache = memoryCache;
             this.dbContext = dbContext;
+
+            this.dataCacheKey = this.configuration[DataCacheKey];
         }
 
         /// <summary>
@@ -41,10 +44,8 @@ namespace BWHazel.Aka.Web.Services
         /// <returns>A collection of all short URLs.</returns>
         public List<ShortUrl> GetAllShortUrls()
         {
-            string dataCacheKey = this.configuration[DataCacheKey];
-
             List<ShortUrl> links;
-            this.memoryCache.TryGetValue(dataCacheKey, out links);
+            this.memoryCache.TryGetValue(this.dataCacheKey, out links);
 
             if (links == null)
             {
@@ -52,7 +53,7 @@ namespace BWHazel.Aka.Web.Services
                     this.dbContext.ShortUrls
                         .ToList();
 
-                this.memoryCache.Set(dataCacheKey, links);
+                this.memoryCache.Set(this.dataCacheKey, links);
             }
 
             return links;
@@ -65,8 +66,6 @@ namespace BWHazel.Aka.Web.Services
         /// <returns>A short URL.</returns>
         public ShortUrl GetShortUrl(string linkId)
         {
-            string dataCacheKey = this.configuration[DataCacheKey];
-
             ShortUrl link =
                 this.GetAllShortUrls()
                 .FirstOrDefault(s => s.Id == linkId);
@@ -84,13 +83,25 @@ namespace BWHazel.Aka.Web.Services
         /// <returns>A task representing the asynchronous operation.</returns>
         public async Task AddShortUrl(ShortUrl link)
         {
-            string dataCacheKey = this.configuration[DataCacheKey];
-
             this.dbContext.ShortUrls
                 .Add(link);
 
             await this.dbContext.SaveChangesAsync();
-            this.memoryCache.Set(dataCacheKey, this.dbContext.ShortUrls.ToList());
+            this.memoryCache.Set(this.dataCacheKey, this.dbContext.ShortUrls.ToList());
+        }
+
+        /// <summary>
+        /// Updates a short URL.
+        /// </summary>
+        /// <param name="link">The short URL to update.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        public async Task UpdateShortUrl(ShortUrl link)
+        {
+            this.dbContext.ShortUrls
+                .Update(link);
+
+            await this.dbContext.SaveChangesAsync();
+            this.memoryCache.Set(this.dataCacheKey, this.dbContext.ShortUrls.ToList());
         }
     }
 }

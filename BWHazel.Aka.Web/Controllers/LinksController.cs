@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using BWHazel.Aka.Data;
 using BWHazel.Aka.Model;
@@ -18,7 +16,6 @@ namespace BWHazel.Aka.Web.Controllers
     public class LinksController : Controller
     {
         private readonly ILogger<LinksController> logger;
-        private readonly IMemoryCache memoryCache;
         private readonly AkaDbContext dbContext;
         private readonly IdentityService identityService;
         private readonly ShortUrlService shortUrlService;
@@ -28,20 +25,17 @@ namespace BWHazel.Aka.Web.Controllers
         /// Initialises a new instance of the <see cref="LinksController"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        /// <param name="memoryCache">The memory cache.</param>
         /// <param name="dbContext">The database context.</param>
         /// <param name="identityService">The identity service.</param>
         /// <param name="shortUrlService">The short URL service.</param>
         public LinksController(
             ILogger<LinksController> logger,
-            IMemoryCache memoryCache,
             AkaDbContext dbContext,
             IdentityService identityService,
             ShortUrlService shortUrlService,
             DataService dataService)
         {
             this.logger = logger;
-            this.memoryCache = memoryCache;
             this.dbContext = dbContext;
             this.identityService = identityService;
             this.shortUrlService = shortUrlService;
@@ -116,17 +110,14 @@ namespace BWHazel.Aka.Web.Controllers
         /// <param name="link">The link to edit.</param>
         /// <returns>A redirection to the links index page.</returns>
         [HttpPost]
-        public IActionResult Edit(ShortUrl link)
+        public async Task<IActionResult> Edit(ShortUrl link)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.View(link);
             }
 
-            this.dbContext.ShortUrls
-                .Update(link);
-
-            this.dbContext.SaveChanges();
+            await this.dataService.UpdateShortUrl(link);
             return this.RedirectToAction("Index");
         }
 

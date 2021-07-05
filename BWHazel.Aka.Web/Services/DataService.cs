@@ -103,5 +103,19 @@ namespace BWHazel.Aka.Web.Services
             await this.dbContext.SaveChangesAsync();
             this.memoryCache.Set(this.dataCacheKey, this.dbContext.ShortUrls.ToList());
         }
+
+        /// <summary>
+        /// Removes a short URL.
+        /// </summary>
+        /// <param name="link">The short URL to remove.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        public async Task RemoveShortUrl(ShortUrl link)
+        {
+            this.dbContext.ShortUrls
+                .Remove(link);
+
+            await this.dbContext.SaveChangesAsync();
+            this.memoryCache.Set(this.dataCacheKey, this.dbContext.ShortUrls.ToList());
+        }
     }
 }

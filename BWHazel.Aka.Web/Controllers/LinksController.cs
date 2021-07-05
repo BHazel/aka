@@ -144,12 +144,9 @@ namespace BWHazel.Aka.Web.Controllers
         /// <param name="link">The link to delete.</param>
         /// <returns>A redirection to the links index page.</returns>
         [HttpPost]
-        public IActionResult Delete(ShortUrl link)
+        public async Task<IActionResult> Delete(ShortUrl link)
         {
-            this.dbContext.ShortUrls
-                .Remove(link);
-
-            this.dbContext.SaveChanges();
+            await this.dataService.RemoveShortUrl(link);
             return this.RedirectToAction("Index");
         }
 

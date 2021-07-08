@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +19,7 @@ namespace BWHazel.Aka.Web.Controllers
         private readonly AkaDbContext dbContext;
         private readonly IdentityService identityService;
         private readonly ShortUrlService shortUrlService;
+        private readonly DataService dataService;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="LinksController"/> class.
@@ -27,16 +27,19 @@ namespace BWHazel.Aka.Web.Controllers
         /// <param name="logger">The logger.</param>
         /// <param name="dbContext">The database context.</param>
         /// <param name="identityService">The identity service.</param>
+        /// <param name="shortUrlService">The short URL service.</param>
         public LinksController(
             ILogger<LinksController> logger,
             AkaDbContext dbContext,
             IdentityService identityService,
-            ShortUrlService shortUrlService)
+            ShortUrlService shortUrlService,
+            DataService dataService)
         {
             this.logger = logger;
             this.dbContext = dbContext;
             this.identityService = identityService;
             this.shortUrlService = shortUrlService;
+            this.dataService = dataService;
         }
 
         /// <summary>
@@ -46,10 +49,7 @@ namespace BWHazel.Aka.Web.Controllers
         [AllowAnonymous]
         public IActionResult Index()
         {
-            List<ShortUrl> links =
-                this.dbContext.ShortUrls
-                    .ToList();
-
+            List<ShortUrl> links = this.dataService.GetAllShortUrls();
             return this.View(links);
         }
 
@@ -82,10 +82,8 @@ namespace BWHazel.Aka.Web.Controllers
             }
 
             link.UserId = this.identityService.GetUserId(this.User);
-            this.dbContext.ShortUrls
-                .Add(link);
+            await this.dataService.AddShortUrl(link);
 
-            await this.dbContext.SaveChangesAsync();
             return this.RedirectToAction("Index");
         }
 
@@ -97,10 +95,7 @@ namespace BWHazel.Aka.Web.Controllers
         [HttpGet]
         public IActionResult Edit(string linkId)
         {
-            ShortUrl link =
-                this.dbContext.ShortUrls
-                .FirstOrDefault(s => s.Id == linkId);
-
+            ShortUrl link = this.dataService.GetShortUrl(linkId);
             if (link == null)
             {
                 return this.NotFound();
@@ -115,17 +110,14 @@ namespace BWHazel.Aka.Web.Controllers
         /// <param name="link">The link to edit.</param>
         /// <returns>A redirection to the links index page.</returns>
         [HttpPost]
-        public IActionResult Edit(ShortUrl link)
+        public async Task<IActionResult> Edit(ShortUrl link)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.View(link);
             }
 
-            this.dbContext.ShortUrls
-                .Update(link);
-
-            this.dbContext.SaveChanges();
+            await this.dataService.UpdateShortUrl(link);
             return this.RedirectToAction("Index");
         }
 
@@ -137,10 +129,7 @@ namespace BWHazel.Aka.Web.Controllers
         [HttpGet]
         public IActionResult Delete(string linkId)
         {
-            ShortUrl link =
-                this.dbContext.ShortUrls
-                .FirstOrDefault(s => s.Id == linkId);
-
+            ShortUrl link = this.dataService.GetShortUrl(linkId);
             if (link == null)
             {
                 return this.NotFound();
@@ -155,12 +144,9 @@ namespace BWHazel.Aka.Web.Controllers
         /// <param name="link">The link to delete.</param>
         /// <returns>A redirection to the links index page.</returns>
         [HttpPost]
-        public IActionResult Delete(ShortUrl link)
+        public async Task<IActionResult> Delete(ShortUrl link)
         {
-            this.dbContext.ShortUrls
-                .Remove(link);
-
-            this.dbContext.SaveChanges();
+            await this.dataService.RemoveShortUrl(link);
             return this.RedirectToAction("Index");
         }
 
@@ -172,10 +158,7 @@ namespace BWHazel.Aka.Web.Controllers
         [AllowAnonymous]
         public IActionResult Open(string linkId)
         {
-            ShortUrl link =
-                this.dbContext.ShortUrls
-                .FirstOrDefault(s => s.Id == linkId);
-
+            ShortUrl link = this.dataService.GetShortUrl(linkId);
             return this.View(link);
         }
     }

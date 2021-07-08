@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using BWHazel.Aka.Data;
 using BWHazel.Aka.Model;
 using BWHazel.Aka.Web.Services;
 
@@ -16,7 +15,6 @@ namespace BWHazel.Aka.Web.Controllers
     public class LinksController : Controller
     {
         private readonly ILogger<LinksController> logger;
-        private readonly AkaDbContext dbContext;
         private readonly IdentityService identityService;
         private readonly ShortUrlService shortUrlService;
         private readonly DataService dataService;
@@ -25,18 +23,15 @@ namespace BWHazel.Aka.Web.Controllers
         /// Initialises a new instance of the <see cref="LinksController"/> class.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        /// <param name="dbContext">The database context.</param>
         /// <param name="identityService">The identity service.</param>
         /// <param name="shortUrlService">The short URL service.</param>
         public LinksController(
             ILogger<LinksController> logger,
-            AkaDbContext dbContext,
             IdentityService identityService,
             ShortUrlService shortUrlService,
             DataService dataService)
         {
             this.logger = logger;
-            this.dbContext = dbContext;
             this.identityService = identityService;
             this.shortUrlService = shortUrlService;
             this.dataService = dataService;

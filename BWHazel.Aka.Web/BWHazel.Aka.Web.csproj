@@ -16,6 +16,7 @@
     <PackageReference Include="DotNext" Version="3.2.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="5.0.6" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.13.1" />
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.1" />
   </ItemGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="sass wwwroot/css/site.scss wwwroot/css/site.css" />

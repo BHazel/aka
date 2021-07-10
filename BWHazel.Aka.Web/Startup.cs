@@ -55,6 +55,7 @@ namespace BWHazel.Aka.Web
                 this.Configuration,
                 AzureAdSectionKey);
 
+            services.AddApplicationInsightsTelemetry();
             services.AddControllersWithViews()
                 .AddMicrosoftIdentityUI();
 

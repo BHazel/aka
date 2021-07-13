@@ -1,0 +1,42 @@
+name: Build Site
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Set up .NET
+        uses: actions/setup-dotnet
+        with:
+          dotnet-version: "5.0.x"
+      - name: Get Environment & Secrets (Development)
+        if: github.ref != 'refs/heads/master' && !contains(github.ref, '/rl-')
+        run: |
+          echo "buildConfiguration=Debug" >> $GITHUB_ENV
+          echo "azureAdAppClientId=${{ secrets.AZURE_AD_APP_CLIENT_ID_DEV }}" >> $GITHUB_ENV
+          echo "azureAdAppClientSecret=${{ secrets.AZURE_AD_APP_CLIENT_SECRET_DEV }}" >> $GITHUB_ENV
+          echo "azureAdAppTenantId=${{ secrets.AZURE_AD_APP_TENANT_ID_DEV }}" >> $GITHUB_ENV
+          echo "azureKeyVault=${{ secrets.AZURE_KEY_VAULT_DEV }}" >> $GITHUB_ENV
+      - name: Get Environment & Secrets (Production)
+        if: github.ref == 'refs/heads/master' || contains(github.ref, '/rl-')
+        run: |
+          echo "buildConfiguration=Release" >> $GITHUB_ENV
+          echo "azureAdAppClientId=${{ secrets.AZURE_AD_APP_CLIENT_ID_PROD }}" >> $GITHUB_ENV
+          echo "azureAdAppClientSecret=${{ secrets.AZURE_AD_APP_CLIENT_SECRET_PROD }}" >> $GITHUB_ENV
+          echo "azureAdAppTenantId=${{ secrets.AZURE_AD_APP_TENANT_ID_PROD }}" >> $GITHUB_ENV
+          echo "azureKeyVault=${{ secrets.AZURE_KEY_VAULT_PROD }}" >> $GITHUB_ENV
+      - name: Apply Secrets
+        run: |
+          find . -type f -exec sed -i "s/{{secrets.azureAdAppClientId}}/${{ env.azureAdAppClientId }}/g" {} +
+          find . -type f -exec sed -i "s/{{secrets.azureAdAppClientSecret}}/${{ env.azureAdAppClientSecret }}/g" {} +
+          find . -type f -exec sed -i "s/{{secrets.azureAdAppTenantId}}/${{ env.azureAdAppTenantId }}/g" {} +
+          find . -type f -exec sed -i "s/{{secrets.azureKeyVault}}/${{ env.azureKeyVault }}/g" {} +
+      - name: Build Site
+        run: |
+          dotnet publish BWHazel.Aka.sln -c ${{ env.buildConfiguration }} -o dist
+      - name: Upload Build Artefact
+        uses: actions/upload-artifact@v2
+        with:
+          name: aka-bwhazel
+          path: dist

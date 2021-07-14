@@ -1,0 +1,37 @@
+﻿@import "../lib/materialize/css/materialize.scss";
+
+.colour-success {
+    @extend .green;
+}
+
+.colour-danger {
+    @extend .red, .darken-4;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+h1, h4 {
+    color: $secondary-color;
+}
+
+code {
+    @extend .red-text, .text-lighten-1;
+}
+
+footer {
+    .page-footer {
+        margin: 0;
+    }
+
+    a {
+        color: #ffffff;
+    }
+}

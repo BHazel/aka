@@ -1,0 +1,18 @@
+﻿@using BWHazel.Aka.Web.Services;
+
+@inject IdentityService identityService
+
+@if (this.User.Identity.IsAuthenticated)
+{
+    <li><a asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign Out</a></li>
+    <li>
+        <a class="subheader" href="#"><strong>@this.identityService.GetUserName(this.User)</strong></a>
+    </li>
+}
+else
+{
+    <li><a asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Sign In</a></li>
+    <li>
+        <a class="subheader" href="#"><strong>Not Signed In</strong></a>
+</li>
+}

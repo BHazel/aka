@@ -1,8 +1,18 @@
-﻿@{
-    ViewData["Title"] = "Welcome!";
+﻿@using Microsoft.Extensions.Configuration
+
+@{
+    this.ViewData["Title"] = "Welcome!";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@inject IConfiguration configuration
+
+<div class="section no-pad-bot">
+    <div class="container">
+        <br />
+        <br />
+        <h1 class="header center">Welcome to @this.configuration["Site:Name"]!</h1>
+        <div class="row center">
+            <h5>Click the Links link above for a complete list of short URLs.</h5>
+        </div>
+    </div>
 </div>

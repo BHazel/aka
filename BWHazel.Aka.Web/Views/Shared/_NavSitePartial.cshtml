@@ -1,0 +1,18 @@
+﻿@using Microsoft.Extensions.Configuration;
+
+@inject IConfiguration configuration
+
+<nav role="navigation">
+    <div class="nav-wrapper container">
+        <a class="brand-logo" asp-controller="Home" asp-action="Index">@this.configuration["Site:Name"]</a>
+        <ul class="right hide-on-med-and-down">
+            <partial name="_NavSiteItemsPartial" />
+        </ul>
+        <ul id="nav-mobile" class="sidenav">
+            <partial name="_NavSiteItemsPartial" />
+        </ul>
+        <a class="sidenav-trigger" data-target="nav-mobile" href="#">
+            <i class="material-icons">menu</i>
+        </a>
+    </div>
+</nav>

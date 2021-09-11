@@ -1,14 +1,14 @@
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+ENV AzureAD__TenantId ""
+ENV AzureAD__ClientId ""
+ENV AzureAD__ClientSecret ""
+ENV Secrets__KeyVault ""
+
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-ARG azureAdAppTenantId
-ARG azureAdAppClientId
-ARG azureAdAppClientSecret
-ARG azureKeyVault
-
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash && \
     apt-get install -y nodejs && \
     npm install -g sass
@@ -20,10 +20,6 @@ COPY ["BWHazel.Aka.Model/BWHazel.Aka.Model.csproj", "BWHazel.Aka.Model/"]
 RUN dotnet restore "BWHazel.Aka.Web/BWHazel.Aka.Web.csproj"
 COPY . .
 WORKDIR "/src/BWHazel.Aka.Web"
-RUN find . -type f -exec sed -i "s/{{secrets.azureAdAppTenantId}}/${azureAdAppTenantId}/g" {} + && \
-    find . -type f -exec sed -i "s/{{secrets.azureAdAppClientId}}/${azureAdAppClientId}/g" {} + && \
-    find . -type f -exec sed -i "s/{{secrets.azureAdAppClientSecret}}/${azureAdAppClientSecret}/g" {} + && \
-    find . -type f -exec sed -i "s/{{secrets.azureKeyVault}}/${azureKeyVault}/g" {} +
 
 RUN dotnet build "BWHazel.Aka.Web.csproj" -c Release -o /app/build
 

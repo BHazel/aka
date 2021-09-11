@@ -29,5 +29,10 @@ namespace BWHazel.Aka.Model
         /// Gets or sets the ID of the user which created the link.
         /// </summary>
         public string UserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether a link is public.
+        /// </summary>
+        public bool IsPublic { get; set; }
     }
 }

@@ -36,7 +36,10 @@ namespace BWHazel.Aka.Web
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, config) =>
                 {
-                    IConfigurationRoot rootConfig = config.Build();
+                    IConfigurationRoot rootConfig = config
+                        .AddEnvironmentVariables()
+                        .Build();
+
                     config.AddAzureKeyVault(
                         new Uri($"https://{rootConfig[SecretsKeyVaultKey]}.vault.azure.net"),
                         new ClientSecretCredential(

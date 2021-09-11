@@ -13,27 +13,37 @@
 
         <a asp-action="Create">Create Link</a>
 
-        <table class="striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Link</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (ShortUrl link in this.Model)
-                {
+        @if (this.Model.Count() > 0)
+        {
+            <table class="striped">
+                <thead>
                     <tr>
-                        <td><code>@link.Id</code></td>
-                        <td><a asp-controller="Links" asp-action="Open" asp-route-linkId="@link.Id">@link.Title</a></td>
-                        <td>
-                            <a asp-action="Edit" asp-route-linkId="@link.Id">Edit</a> |
-                            <a asp-action="Delete" asp-route-linkId="@link.Id">Delete</a>
-                        </td>
+                        <th>ID</th>
+                        <th>Link</th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (ShortUrl link in this.Model)
+                    {
+                        @if (link.IsPublic || this.User.Identity.IsAuthenticated)
+                        {
+                            <tr>
+                                <td><code>@link.Id</code></td>
+                                <td><a asp-controller="Links" asp-action="Open" asp-route-linkId="@link.Id">@link.Title</a></td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-linkId="@link.Id">Edit</a> |
+                                    <a asp-action="Delete" asp-route-linkId="@link.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>There are currently no links.</p>
+        }
     </div>
 </div>

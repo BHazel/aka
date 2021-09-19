@@ -33,5 +33,5 @@ ENTRYPOINT ["dotnet", "BWHazel.Aka.Web.dll"]
 
 FROM base AS deploy
 WORKDIR /app
-COPY dist /app/publish
+COPY dist .
 ENTRYPOINT ["dotnet", "BWHazel.Aka.Web.dll"]

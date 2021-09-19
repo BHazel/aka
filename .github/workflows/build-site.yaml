@@ -35,19 +35,22 @@ jobs:
           path: dist
   publish:
     runs-on: ubuntu-latest
+    needs: build
     if: contains(github.ref, '/rl-')
     steps:
       - name: Set Docker Image Info
         run: |
-          echo "dockerRepository=bwhazel/aka-bwhazel" >> $GITHUB_ENV
-          echo "dockerImageTag=`awk '{print substr($0, 15)}' <<< github.ref`" >> $GITHUB_ENV
+          echo "dockerRepository=bwhazel/aka" >> $GITHUB_ENV
+          echo "dockerImageTag=`awk -F '-' '{print $NF}' <<< ${{ github.ref }}`" >> $GITHUB_ENV
+      - name: Checkout Repository
+        uses: actions/checkout@v2
       - name: Download Build Artefact
         uses: actions/download-artifact@v2
         with:
           name: aka-bwhazel
           path: dist
       - name: Log into Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}

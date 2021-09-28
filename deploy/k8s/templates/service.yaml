@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aka-bwhazel.fullname" . }}
+  labels:
+    {{- include "aka-bwhazel.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "aka-bwhazel.selectorLabels" . | nindent 4 }}
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http

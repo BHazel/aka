@@ -35,8 +35,16 @@
                 </div>
             </div>
 
+            <div class="row">
+                <label>
+                    <input type="checkbox" asp-for="IsPublic" />
+                    <span>Public</span>
+                </label>
+            </div>
+
             <input type="hidden" asp-for="@this.Model.Id" />
             <input type="hidden" asp-for="@this.Model.UserId" />
+            <input type="hidden" asp-for="@this.Model.IsPublic" />
 
             <div class="row">
                 <button type="submit" class="btn waves-effect waves-light">Edit</button>

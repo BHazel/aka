@@ -1,9 +1,16 @@
-﻿<div class="container">
+﻿@using Microsoft.Extensions.Configuration;
+
+@inject IConfiguration Configuration 
+
+<div class="container">
     <div class="row">
         <div class="col m6 s12">
             <h5>About This Site</h5>
-            <p>This is Benedict Hazel's personal URL shortener service.</p>
-            <p><a href="http://info.bwhazel.uk/privacy-policy">Privacy Policy</a></p>
+            <p>
+                This is Benedict Hazel's personal URL shortener service.<br />
+                Site Version @this.Configuration["Site:Version"]<br />
+                <a href="http://info.bwhazel.uk/privacy-policy">Privacy Policy</a>
+            </p>
         </div>
         <div class="col m3 s12">
             <h5>Other Sites</h5>

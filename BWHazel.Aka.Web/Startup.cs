@@ -110,6 +110,7 @@ namespace BWHazel.Aka.Web
             {
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
+                app.UseHttpsRedirection();
             }
 
             app.UseStaticFiles();

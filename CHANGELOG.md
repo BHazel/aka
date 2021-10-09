@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.1.1 _(09/10/2021)_
+
+* Add HTTPS redirection.
+
 ## v1.1.0 _(28/09/2021)_
 
 * Add version to site.

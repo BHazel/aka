@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <UserSecretsId>b3c971ef-0b53-4efe-8685-08bb5448b34f</UserSecretsId>
   </PropertyGroup>
 
@@ -14,11 +14,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="DotNext" Version="3.2.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="5.0.6" />
-    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.13.1" />
+    <PackageReference Include="DotNext" Version="3.3.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Cosmos" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.21.0" />
     <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.1" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.17.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.19.0" />
   </ItemGroup>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="sass wwwroot/css/site.scss wwwroot/css/site.css" />

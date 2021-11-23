@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 ENV AzureAD__TenantId ""
 ENV AzureAD__ClientId ""
 ENV AzureAD__ClientSecret ""
@@ -8,7 +8,7 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash && \
     apt-get install -y nodejs && \
     npm install -g sass

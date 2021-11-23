@@ -1,5 +1,10 @@
 # Change Log
 
+## v1.2.0 _(23/11/2021)_
+
+* Upgrade application to .NET 6.
+* Fix links table rendering for when none are present.
+
 ## v.1.1.2 _(10/10/2021)_
 
 * Add link to BWHazel web site and update links to the BWHazel Info and BWHazel API sites.

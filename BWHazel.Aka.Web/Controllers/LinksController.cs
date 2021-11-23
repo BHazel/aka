@@ -6,155 +6,154 @@ using Microsoft.Extensions.Logging;
 using BWHazel.Aka.Model;
 using BWHazel.Aka.Web.Services;
 
-namespace BWHazel.Aka.Web.Controllers
+namespace BWHazel.Aka.Web.Controllers;
+
+/// <summary>
+/// The links controller.
+/// </summary>
+[Authorize(Policy = "AkaBWHazel-Administrator")]
+public class LinksController : Controller
 {
+    private readonly ILogger<LinksController> logger;
+    private readonly IdentityService identityService;
+    private readonly ShortUrlService shortUrlService;
+    private readonly DataService dataService;
+
     /// <summary>
-    /// The links controller.
+    /// Initialises a new instance of the <see cref="LinksController"/> class.
     /// </summary>
-    [Authorize(Policy = "AkaBWHazel-Administrator")]
-    public class LinksController : Controller
+    /// <param name="logger">The logger.</param>
+    /// <param name="identityService">The identity service.</param>
+    /// <param name="shortUrlService">The short URL service.</param>
+    public LinksController(
+        ILogger<LinksController> logger,
+        IdentityService identityService,
+        ShortUrlService shortUrlService,
+        DataService dataService)
     {
-        private readonly ILogger<LinksController> logger;
-        private readonly IdentityService identityService;
-        private readonly ShortUrlService shortUrlService;
-        private readonly DataService dataService;
+        this.logger = logger;
+        this.identityService = identityService;
+        this.shortUrlService = shortUrlService;
+        this.dataService = dataService;
+    }
 
-        /// <summary>
-        /// Initialises a new instance of the <see cref="LinksController"/> class.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="identityService">The identity service.</param>
-        /// <param name="shortUrlService">The short URL service.</param>
-        public LinksController(
-            ILogger<LinksController> logger,
-            IdentityService identityService,
-            ShortUrlService shortUrlService,
-            DataService dataService)
-        {
-            this.logger = logger;
-            this.identityService = identityService;
-            this.shortUrlService = shortUrlService;
-            this.dataService = dataService;
-        }
+    /// <summary>
+    /// Returns the links index view.
+    /// </summary>
+    /// <returns>The links index view.</returns>
+    [AllowAnonymous]
+    public IActionResult Index()
+    {
+        List<ShortUrl> links = this.dataService.GetAllShortUrls();
+        return this.View(links);
+    }
 
-        /// <summary>
-        /// Returns the links index view.
-        /// </summary>
-        /// <returns>The links index view.</returns>
-        [AllowAnonymous]
-        public IActionResult Index()
-        {
-            List<ShortUrl> links = this.dataService.GetAllShortUrls();
-            return this.View(links);
-        }
+    /// <summary>
+    /// Returns the create link view.
+    /// </summary>
+    /// <returns>The create link view.</returns>
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return this.View();
+    }
 
-        /// <summary>
-        /// Returns the create link view.
-        /// </summary>
-        /// <returns>The create link view.</returns>
-        [HttpGet]
-        public IActionResult Create()
+    /// <summary>
+    /// Add a new link to the database.
+    /// </summary>
+    /// <param name="link">The link to add.</param>
+    /// <returns>A redirection to the links index page.</returns>
+    [HttpPost]
+    public async Task<IActionResult> Create(ShortUrl link)
+    {
+        if (!this.ModelState.IsValid)
         {
             return this.View();
         }
 
-        /// <summary>
-        /// Add a new link to the database.
-        /// </summary>
-        /// <param name="link">The link to add.</param>
-        /// <returns>A redirection to the links index page.</returns>
-        [HttpPost]
-        public async Task<IActionResult> Create(ShortUrl link)
+        if (string.IsNullOrWhiteSpace(link.Id))
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View();
-            }
-
-            if (string.IsNullOrWhiteSpace(link.Id))
-            {
-                link.Id = this.shortUrlService.GenerateShortUrlCode();
-            }
-
-            link.UserId = this.identityService.GetUserId(this.User);
-            await this.dataService.AddShortUrl(link);
-
-            return this.RedirectToAction("Index");
+            link.Id = this.shortUrlService.GenerateShortUrlCode();
         }
 
-        /// <summary>
-        /// Returns the edit link view.
-        /// </summary>
-        /// <param name="linkId"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public IActionResult Edit(string linkId)
-        {
-            ShortUrl link = this.dataService.GetShortUrl(linkId);
-            if (link == null)
-            {
-                return this.NotFound();
-            }
+        link.UserId = this.identityService.GetUserId(this.User);
+        await this.dataService.AddShortUrl(link);
 
+        return this.RedirectToAction("Index");
+    }
+
+    /// <summary>
+    /// Returns the edit link view.
+    /// </summary>
+    /// <param name="linkId"></param>
+    /// <returns></returns>
+    [HttpGet]
+    public IActionResult Edit(string linkId)
+    {
+        ShortUrl link = this.dataService.GetShortUrl(linkId);
+        if (link == null)
+        {
+            return this.NotFound();
+        }
+
+        return this.View(link);
+    }
+
+    /// <summary>
+    /// Edits a link in the database.
+    /// </summary>
+    /// <param name="link">The link to edit.</param>
+    /// <returns>A redirection to the links index page.</returns>
+    [HttpPost]
+    public async Task<IActionResult> Edit(ShortUrl link)
+    {
+        if (!this.ModelState.IsValid)
+        {
             return this.View(link);
         }
 
-        /// <summary>
-        /// Edits a link in the database.
-        /// </summary>
-        /// <param name="link">The link to edit.</param>
-        /// <returns>A redirection to the links index page.</returns>
-        [HttpPost]
-        public async Task<IActionResult> Edit(ShortUrl link)
-        {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(link);
-            }
+        await this.dataService.UpdateShortUrl(link);
+        return this.RedirectToAction("Index");
+    }
 
-            await this.dataService.UpdateShortUrl(link);
-            return this.RedirectToAction("Index");
+    /// <summary>
+    /// Returns the delete link view.
+    /// </summary>
+    /// <param name="linkId">The link ID.</param>
+    /// <returns>The delete link view.</returns>
+    [HttpGet]
+    public IActionResult Delete(string linkId)
+    {
+        ShortUrl link = this.dataService.GetShortUrl(linkId);
+        if (link == null)
+        {
+            return this.NotFound();
         }
 
-        /// <summary>
-        /// Returns the delete link view.
-        /// </summary>
-        /// <param name="linkId">The link ID.</param>
-        /// <returns>The delete link view.</returns>
-        [HttpGet]
-        public IActionResult Delete(string linkId)
-        {
-            ShortUrl link = this.dataService.GetShortUrl(linkId);
-            if (link == null)
-            {
-                return this.NotFound();
-            }
+        return this.View(link);
+    }
 
-            return this.View(link);
-        }
+    /// <summary>
+    /// Deletes a link from the database.
+    /// </summary>
+    /// <param name="link">The link to delete.</param>
+    /// <returns>A redirection to the links index page.</returns>
+    [HttpPost]
+    public async Task<IActionResult> Delete(ShortUrl link)
+    {
+        await this.dataService.RemoveShortUrl(link);
+        return this.RedirectToAction("Index");
+    }
 
-        /// <summary>
-        /// Deletes a link from the database.
-        /// </summary>
-        /// <param name="link">The link to delete.</param>
-        /// <returns>A redirection to the links index page.</returns>
-        [HttpPost]
-        public async Task<IActionResult> Delete(ShortUrl link)
-        {
-            await this.dataService.RemoveShortUrl(link);
-            return this.RedirectToAction("Index");
-        }
-
-        /// <summary>
-        /// Returns the open link view.
-        /// </summary>
-        /// <param name="linkId">The link ID.</param>
-        /// <returns>The open link view.</returns>
-        [AllowAnonymous]
-        public IActionResult Open(string linkId)
-        {
-            ShortUrl link = this.dataService.GetShortUrl(linkId);
-            return this.View(link);
-        }
+    /// <summary>
+    /// Returns the open link view.
+    /// </summary>
+    /// <param name="linkId">The link ID.</param>
+    /// <returns>The open link view.</returns>
+    [AllowAnonymous]
+    public IActionResult Open(string linkId)
+    {
+        ShortUrl link = this.dataService.GetShortUrl(linkId);
+        return this.View(link);
     }
 }

@@ -1,19 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace BWHazel.Aka.Web.Controllers
+namespace BWHazel.Aka.Web.Controllers;
+
+/// <summary>
+/// The account controller.
+/// </summary>
+public class AccountController : Controller
 {
     /// <summary>
-    /// The account controller.
+    /// Returns the access denied view.
     /// </summary>
-    public class AccountController : Controller
+    /// <returns>The access denied view.</returns>
+    public IActionResult AccessDenied()
     {
-        /// <summary>
-        /// Returns the access denied view.
-        /// </summary>
-        /// <returns>The access denied view.</returns>
-        public IActionResult AccessDenied()
-        {
-            return this.View();
-        }
+        return this.View();
     }
 }

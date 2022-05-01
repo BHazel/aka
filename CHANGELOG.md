@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.2.1 _(01/05/2022)_
+
+* Update MaterializeCSS.
+
 ## v1.2.0 _(23/11/2021)_
 
 * Upgrade application to .NET 6.
